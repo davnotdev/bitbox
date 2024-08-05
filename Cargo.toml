@@ -1,0 +1,3 @@
+[workspace]
+members = ["bitbox"]
+resolver = "2"
