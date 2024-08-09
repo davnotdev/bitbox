@@ -1,0 +1,27 @@
+syntax = "proto3";
+package bitbox;
+
+service Bitbox {
+    rpc Push (PushReq) returns (stream PushChunk);
+}
+
+message PushReq {
+    string path_hash = 1;
+    repeated DirEntry paths = 2;
+}
+
+message DirEntry {
+    string name = 1;
+    uint32 parent = 2;
+}
+
+message PushChunk {
+    uint32 index = 1;
+    uint32 path_index = 2;
+    bytes payload = 3;
+    repeated StorePeer peers = 4;
+}
+
+message StorePeer {
+    string id = 1;
+}

@@ -1,6 +1,13 @@
 use super::*;
+use crossbeam::deque::{Steal, Stealer, Worker};
 
 mod chunker;
+mod net;
+mod zipper;
+
+pub use chunker::{Chunker, FileChunk};
+pub use net::NetChannel;
+pub use zipper::{ZippedChunk, Zipper};
 
 const MAX_CHUNK_SIZE: usize = 128000000;
 

@@ -36,9 +36,6 @@
 
 #### IPC
 
-
-
-
 ## Store
 
 var MOUNT_DIR=/archive

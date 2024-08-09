@@ -35,28 +35,24 @@ fn get_dir_files(path: &Path) -> Result<Vec<FileInfo>> {
 }
 
 pub struct FileChunk {
-    index: usize,
-    hash: u64,
-    bytes: Vec<u8>,
+    pub index: usize,
+    pub hash: u64,
+    pub bytes: Vec<u8>,
 }
 
 pub struct Chunker {
     path: PathBuf,
     files: Vec<FileInfo>,
-    tx: mpsc::Sender<FileChunk>,
+    worker: Worker<FileChunk>,
 }
 
 impl Chunker {
-    pub fn new(path: &Path, files: Vec<FileInfo>) -> (Self, mpsc::Receiver<FileChunk>) {
-        let (tx, rx) = mpsc::channel();
-        (
-            Self {
-                path: path.to_owned(),
-                files,
-                tx,
-            },
-            rx,
-        )
+    pub fn new(path: &Path, files: Vec<FileInfo>, worker: Worker<FileChunk>) -> Self {
+        Self {
+            path: path.to_owned(),
+            files,
+            worker,
+        }
     }
 
     pub fn run(&self) -> Result<()> {
@@ -79,7 +75,7 @@ impl Chunker {
                 let bytes = buf[0..bytes_read].to_vec();
                 let chunk = FileChunk { index, hash, bytes };
                 index += 1;
-                self.tx.send(chunk)?;
+                self.worker.push(chunk);
             }
         }
 

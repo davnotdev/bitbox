@@ -7,5 +7,11 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.86"
+crossbeam = "0.8.4"
+prost = "0.13.1"
+rayon = "1.10.0"
 thiserror = "1.0.63"
+tokio = "1.39.2"
+tonic = "0.12.1"
+tonic-build = "0.12.1"
 zstd = "0.13.2"
